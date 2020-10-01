@@ -74,7 +74,7 @@ static void MX_DMA_Init(void);
 static void MX_SPI1_Init(void);
 /* USER CODE BEGIN PFP */
 static void MX_TIM1_Init( void );
-static void MX_TIM4_Init( void );
+static void MX_TIM8_Init( void );
 static void TIM_SendEnd( void );
 /* USER CODE END PFP */
 
@@ -115,7 +115,7 @@ int main(void)
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
   MX_TIM1_Init();
-  MX_TIM4_Init();
+  MX_TIM8_Init();
   memset( add_leds_buf1.data_buf, 0x55, PIXELS_NUM*24 );
   LED_SendData(&add_leds_buf1, PIXELS_NUM*24);
   HAL_SPI_Receive_DMA(&hspi1, add_leds_buf1.data_buf, PIXELS_NUM*24);
@@ -328,7 +328,7 @@ static void MX_TIM1_Init( void )
 	TIM1->CR1 &= ~TIM_CR1_CEN; 			//Bit 0 CEN: Counter enable
 
 }
-static void MX_TIM4_Init( void )
+static void MX_TIM8_Init( void )
 {
 	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN;
 
