@@ -32,8 +32,8 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#define PIXELS_NUM	100
-#define PERIOD_SYG	250
+#define PIXELS_NUM	1000
+#define PERIOD_SYG	260
 #define NUL_SYG		PERIOD_SYG*0.3
 #define ONE_SYG		PERIOD_SYG*0.7
 
@@ -78,7 +78,8 @@ void Error_Handler(void);
 void TIM1_UPD_Servo_Set( void );
 void TIM4_UPD_Servo_Set( void );
 void TIM1_CC_Servo_Work_IT( void );
-void LED_SendData(LED_HandleTypeDef *data_buf, uint16_t data_len);
+void LED_SendData(uint16_t data_len);
+void Delay( uint16_t ms );
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

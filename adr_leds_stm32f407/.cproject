@@ -183,4 +183,5 @@
 			<resource resourceType="PROJECT" workspacePath="/adr_leds_stm32f407"/>
 		</configuration>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>
