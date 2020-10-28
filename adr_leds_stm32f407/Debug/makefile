@@ -46,8 +46,8 @@ adr_leds_stm32f407.bin \
 all: adr_leds_stm32f407.elf secondary-outputs
 
 # Tool invocations
-adr_leds_stm32f407.elf: $(OBJS) $(USER_OBJS) D:\Git\addr_leds_controller\adr_leds_stm32f407\STM32F407VGTX_FLASH.ld
-	arm-none-eabi-gcc -o "adr_leds_stm32f407.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\Git\addr_leds_controller\adr_leds_stm32f407\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="adr_leds_stm32f407.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+adr_leds_stm32f407.elf: $(OBJS) $(USER_OBJS) D:\Documents\Git\adr_leds_prj\adr_leds_stm32f407\STM32F407VGTX_FLASH.ld
+	arm-none-eabi-gcc -o "adr_leds_stm32f407.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\Documents\Git\adr_leds_prj\adr_leds_stm32f407\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="adr_leds_stm32f407.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

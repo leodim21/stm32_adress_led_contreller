@@ -1,7 +1,8 @@
-main.c:153:6:SystemClock_Config	96	static
-main.c:416:6:LED_SendData	48	static
-main.c:457:6:TIM1_UPD_Servo_Set	16	static
-main.c:476:6:HAL_SPI_RxCpltCallback	8	static
-main.c:484:6:Delay	16	static
-main.c:92:5:main	40	static
-main.c:499:6:Error_Handler	0	static
+main.c:534:13:ReverseLedLineArray	4	static
+main.c:187:6:SystemClock_Config	96	static
+main.c:453:6:LED_SendData	48	static
+main.c:498:6:TIM1_UPD_Servo_Set	8	static
+main.c:517:6:HAL_SPI_RxCpltCallback	0	static
+main.c:525:6:Delay	24	static
+main.c:125:5:main	40	static
+main.c:559:6:Error_Handler	0	static

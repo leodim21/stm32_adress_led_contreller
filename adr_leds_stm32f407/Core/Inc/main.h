@@ -32,26 +32,33 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#define PIXELS_NUM	1000
-#define PERIOD_SYG	260
-#define NUL_SYG		PERIOD_SYG*0.3
-#define ONE_SYG		PERIOD_SYG*0.7
+#define PIXELS_NUM  	900
+#define PIXELS_BYTE  	PIXELS_NUM*3
+#define PIXELS_BIT  	PIXELS_BYTE*8
+
+#define PERIOD_SYG		260
+#define NUL_SYG			230*0.25
+#define ONE_SYG			230*0.6
 
 #include <string.h>
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
+struct NEO_Pixel_s
+{
+	uint8_t grb[3];
+};
 struct LED_data_s
 {
-	uint8_t line1[PIXELS_NUM*3];
-	uint8_t line2[PIXELS_NUM*3];
-	uint8_t line3[PIXELS_NUM*3];
-	uint8_t line4[PIXELS_NUM*3];
-	uint8_t line5[PIXELS_NUM*3];
-	uint8_t line6[PIXELS_NUM*3];
-	uint8_t line7[PIXELS_NUM*3];
-	uint8_t line8[PIXELS_NUM*3];
+	struct NEO_Pixel_s line1[PIXELS_NUM];
+	struct NEO_Pixel_s line2[PIXELS_NUM];
+	struct NEO_Pixel_s line3[PIXELS_NUM];
+	struct NEO_Pixel_s line4[PIXELS_NUM];
+	struct NEO_Pixel_s line5[PIXELS_NUM];
+	struct NEO_Pixel_s line6[PIXELS_NUM];
+	struct NEO_Pixel_s line7[PIXELS_NUM];
+	struct NEO_Pixel_s line8[PIXELS_NUM];
 	uint16_t data_buf_len;
 };
 typedef union
