@@ -454,7 +454,8 @@ void LED_SendData( uint16_t data_len )
 {
 	if (!((TIM1->CR1 & TIM_CR1_CEN)||(TIM4->CR1 & TIM_CR1_CEN)))
 	{
-		SetOutLedArray(&local.buff_s, &add_leds_buff, PIXELS_NUM);
+//		SetOutLedArray(&local.buff_s, &add_leds_buff, PIXELS_NUM);
+		memcpy( local.buff_s.data_buf, add_leds_buff.data_buf, PIXELS_NUM*24);
 
 		local.data_buf[0] = (uint8_t *)local.buff_s.led_data.line1;
 		local.data_buf[1] = (uint8_t *)local.buff_s.led_data.line2;
@@ -464,8 +465,6 @@ void LED_SendData( uint16_t data_len )
 		local.data_buf[5] = (uint8_t *)local.buff_s.led_data.line6;
 		local.data_buf[6] = (uint8_t *)local.buff_s.led_data.line7;
 		local.data_buf[7] = (uint8_t *)local.buff_s.led_data.line8;
-
-//		HAL_SPI_Receive_DMA(&hspi1,add_leds_buff.data_buf, PIXELS_NUM*24);
 
 		local.data_len = data_len/8;
 		local.send_start = 1;
