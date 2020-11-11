@@ -36,9 +36,9 @@ extern "C" {
 #define PIXELS_BYTE  	PIXELS_NUM*3
 #define PIXELS_BIT  	PIXELS_BYTE*8
 
-#define PERIOD_SYG		260
-#define NUL_SYG			230*0.3
-#define ONE_SYG			230*0.6
+#define PERIOD_SYG		270
+#define NUL_SYG			230*0.35
+#define ONE_SYG			230*0.75
 
 #include <string.h>
 /* USER CODE END Includes */
