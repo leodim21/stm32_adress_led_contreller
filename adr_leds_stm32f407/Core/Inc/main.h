@@ -36,7 +36,7 @@ extern "C" {
 #define PIXELS_BYTE  	PIXELS_NUM*3
 #define PIXELS_BIT  	PIXELS_BYTE*8
 
-#define PERIOD_SYG		260
+#define PERIOD_SYG		270
 #define NUL_SYG			230*0.22
 #define ONE_SYG			230*0.6
 
