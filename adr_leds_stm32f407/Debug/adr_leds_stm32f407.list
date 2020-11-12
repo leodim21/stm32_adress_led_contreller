@@ -1037,7 +1037,7 @@ void Delay( uint16_t ms )
 	TIM1->PSC = 0;
  8000a4a:	629c      	str	r4, [r3, #40]	; 0x28
 	TIM1->ARR = PERIOD_SYG;
- 8000a4c:	f44f 7082 	mov.w	r0, #260	; 0x104
+ 8000a4c:	f44f 7087 	mov.w	r0, #270	; 0x10e
  8000a50:	62d8      	str	r0, [r3, #44]	; 0x2c
 	TIM1->CCER |= TIM_CCER_CC1E;   	// Capture/Compare 1 output enable
  8000a52:	6a1a      	ldr	r2, [r3, #32]
