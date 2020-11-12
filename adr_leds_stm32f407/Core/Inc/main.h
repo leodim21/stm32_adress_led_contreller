@@ -37,8 +37,8 @@ extern "C" {
 #define PIXELS_BIT  	PIXELS_BYTE*8
 
 #define PERIOD_SYG		270
-#define NUL_SYG			230*0.35
-#define ONE_SYG			230*0.75
+#define NUL_SYG			230*0.22
+#define ONE_SYG			230*0.65
 
 #include <string.h>
 /* USER CODE END Includes */
