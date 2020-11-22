@@ -348,6 +348,8 @@ static void MX_TIM1_Init( void )
 					| GPIO_MODER_MODER13_1
 					| GPIO_MODER_MODER14_1;
 
+
+
 	GPIOE->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR9_0 | GPIO_OSPEEDER_OSPEEDR9_1
 					| GPIO_OSPEEDER_OSPEEDR11_0 | GPIO_OSPEEDER_OSPEEDR11_1
 					| GPIO_OSPEEDER_OSPEEDR13_0 | GPIO_OSPEEDER_OSPEEDR13_1
@@ -361,9 +363,13 @@ static void MX_TIM1_Init( void )
 	TIM1->ARR = PERIOD_SYG;
 
 	TIM1->CCER |= TIM_CCER_CC1E;   	// Capture/Compare 1 output enable
+	TIM1->CCER |= TIM_CCER_CC1P;
 	TIM1->CCER |= TIM_CCER_CC2E;   	// Capture/Compare 2 output enable
+	TIM1->CCER |= TIM_CCER_CC2P;
 	TIM1->CCER |= TIM_CCER_CC3E;   	// Capture/Compare 2 output enable
+	TIM1->CCER |= TIM_CCER_CC3P;
 	TIM1->CCER |= TIM_CCER_CC4E;   	// Capture/Compare 2 output enable
+	TIM1->CCER |= TIM_CCER_CC4P;
 
 //	GPIOA->ODR &= ~GPIO_ODR_OD8;
 
@@ -391,6 +397,7 @@ static void MX_TIM1_Init( void )
 	NVIC_SetPriority( TIM1_UP_TIM10_IRQn,1 );
 	TIM1->DIER |= TIM_DIER_UIE;
 
+	TIM1->BDTR|= TIM_BDTR_OSSR;
 	TIM1->BDTR|= TIM_BDTR_MOE;     		//MOE: Main output enable
 	TIM1->CR1 &= ~TIM_CR1_CEN; 			//Bit 0 CEN: Counter enable
 
@@ -422,9 +429,13 @@ static void MX_TIM8_Init( void )
 	TIM8->ARR = PERIOD_SYG;
 
 	TIM8->CCER |= TIM_CCER_CC1E;   	// Capture/Compare 1 output enable
+	TIM8->CCER |= TIM_CCER_CC1P;
 	TIM8->CCER |= TIM_CCER_CC2E;   	// Capture/Compare 2 output enable
+	TIM8->CCER |= TIM_CCER_CC2P;
 	TIM8->CCER |= TIM_CCER_CC3E;   	// Capture/Compare 2 output enable
+	TIM8->CCER |= TIM_CCER_CC3P;
 	TIM8->CCER |= TIM_CCER_CC4E;   	// Capture/Compare 2 output enable
+	TIM8->CCER |= TIM_CCER_CC4P;
 
 	TIM8->CCMR1 |= TIM_CCMR1_OC1PE;
 	TIM8->CCMR1 &= ~TIM_CCMR1_OC1M_0;
@@ -481,7 +492,7 @@ void LED_SendData( uint16_t data_len )
 		TIM8->CCR1 = local.pulse[(0x80 & local.data_buf[4][local.byte_count] << local.bit_count) >> 7];
 		TIM8->CCR2 = local.pulse[(0x80 & local.data_buf[5][local.byte_count] << local.bit_count) >> 7];
 		TIM8->CCR3 = local.pulse[(0x80 & local.data_buf[6][local.byte_count] << local.bit_count) >> 7];
-		TIM8->CCR4 = local.pulse[(0x80 & local.data_buf[7][local.byte_count] << local.bit_count) >> 7];
+		TIM8->CCR4 = local.pulse[(0x80 & local.data_buf[7][local.byte_count] << local.bit_count) >> 7]+9;
 
 		TIM1->CR1 |= TIM_CR1_CEN;
 		TIM8->CR1 |= TIM_CR1_CEN;
@@ -509,7 +520,7 @@ void TIM1_UPD_Servo_Set( void )
 	TIM8->CCR1 = local.pulse[(0x80 & local.data_buf[4][local.byte_count] << local.bit_count) >> 7];
 	TIM8->CCR2 = local.pulse[(0x80 & local.data_buf[5][local.byte_count] << local.bit_count) >> 7];
 	TIM8->CCR3 = local.pulse[(0x80 & local.data_buf[6][local.byte_count] << local.bit_count) >> 7];
-	TIM8->CCR4 = local.pulse[(0x80 & local.data_buf[7][local.byte_count] << local.bit_count) >> 7];
+	TIM8->CCR4 = local.pulse[(0x80 & local.data_buf[7][local.byte_count] << local.bit_count) >> 7]+9;
 
 	( local.byte_count == local.data_len )?( TIM_SendEnd() ):( TIM1->CR1 |= TIM_CR1_CEN );
 }

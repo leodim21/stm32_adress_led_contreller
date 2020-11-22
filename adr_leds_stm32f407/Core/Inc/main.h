@@ -32,13 +32,13 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#define PIXELS_NUM  	900
+#define PIXELS_NUM  	2
 #define PIXELS_BYTE  	PIXELS_NUM*3
 #define PIXELS_BIT  	PIXELS_BYTE*8
 
-#define PERIOD_SYG		270
-#define NUL_SYG			230*0.22
-#define ONE_SYG			230*0.6
+#define PERIOD_SYG		260
+#define NUL_SYG			230*0.8
+#define ONE_SYG			230*0.45
 
 #include <string.h>
 /* USER CODE END Includes */
