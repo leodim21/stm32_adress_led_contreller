@@ -397,10 +397,9 @@ static void MX_TIM1_Init( void )
 	NVIC_SetPriority( TIM1_UP_TIM10_IRQn,1 );
 	TIM1->DIER |= TIM_DIER_UIE;
 
-	TIM1->BDTR|= TIM_BDTR_OSSR;
-	TIM1->BDTR|= TIM_BDTR_MOE;     		//MOE: Main output enable
+	TIM1->BDTR|= TIM_BDTR_AOE;
+	TIM1->BDTR&= ~TIM_BDTR_MOE;     	//MOE: Main output enable
 	TIM1->CR1 &= ~TIM_CR1_CEN; 			//Bit 0 CEN: Counter enable
-
 }
 static void MX_TIM8_Init( void )
 {
@@ -457,7 +456,8 @@ static void MX_TIM8_Init( void )
 	TIM8->CCMR2 |= TIM_CCMR2_OC4M_1;
 	TIM8->CCMR2 |= TIM_CCMR2_OC4M_2; 	//110: PWM mode 1
 
-	TIM8->BDTR|= TIM_BDTR_MOE;     		//MOE: Main output enable
+	TIM8->BDTR|= TIM_BDTR_AOE;
+	TIM8->BDTR&= ~TIM_BDTR_MOE;     		//MOE: Main output enable
 	TIM8->CR1 &= ~TIM_CR1_CEN; 			//Bit 0 CEN: Counter enable
 }
 
@@ -492,14 +492,18 @@ void LED_SendData( uint16_t data_len )
 		TIM8->CCR1 = local.pulse[(0x80 & local.data_buf[4][local.byte_count] << local.bit_count) >> 7];
 		TIM8->CCR2 = local.pulse[(0x80 & local.data_buf[5][local.byte_count] << local.bit_count) >> 7];
 		TIM8->CCR3 = local.pulse[(0x80 & local.data_buf[6][local.byte_count] << local.bit_count) >> 7];
-		TIM8->CCR4 = local.pulse[(0x80 & local.data_buf[7][local.byte_count] << local.bit_count) >> 7]+9;
+		TIM8->CCR4 = local.pulse[(0x80 & local.data_buf[7][local.byte_count] << local.bit_count) >> 7];
 
 		TIM1->CR1 |= TIM_CR1_CEN;
 		TIM8->CR1 |= TIM_CR1_CEN;
+
+
 	}
 }
 static void TIM_SendEnd(void)
 {
+	TIM1->BDTR&= ~TIM_BDTR_MOE;
+	TIM8->BDTR&= ~TIM_BDTR_MOE;
 	TIM1->CR1 &= ~TIM_CR1_CEN;
 	TIM8->CR1 &= ~TIM_CR1_CEN;
 
@@ -520,7 +524,7 @@ void TIM1_UPD_Servo_Set( void )
 	TIM8->CCR1 = local.pulse[(0x80 & local.data_buf[4][local.byte_count] << local.bit_count) >> 7];
 	TIM8->CCR2 = local.pulse[(0x80 & local.data_buf[5][local.byte_count] << local.bit_count) >> 7];
 	TIM8->CCR3 = local.pulse[(0x80 & local.data_buf[6][local.byte_count] << local.bit_count) >> 7];
-	TIM8->CCR4 = local.pulse[(0x80 & local.data_buf[7][local.byte_count] << local.bit_count) >> 7]+9;
+	TIM8->CCR4 = local.pulse[(0x80 & local.data_buf[7][local.byte_count] << local.bit_count) >> 7];
 
 	( local.byte_count == local.data_len )?( TIM_SendEnd() ):( TIM1->CR1 |= TIM_CR1_CEN );
 }
