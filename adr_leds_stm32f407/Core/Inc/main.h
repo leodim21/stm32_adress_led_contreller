@@ -36,12 +36,12 @@ extern "C" {
 #define PIXELS_BYTE  	PIXELS_NUM*3
 #define PIXELS_BIT  	PIXELS_BYTE*8
 
-#define NUL_TIME		250 // ns
-#define ONE_TIME		800 // ns
+#define NUL_TIME		220 // ns
+#define ONE_TIME		650 // ns
 
-#define PERIOD_SYG		260
-#define NUL_SYG			(PERIOD_SYG - NUL_TIME/6)
-#define ONE_SYG			(PERIOD_SYG - ONE_TIME/6)
+#define PERIOD_SYG		300
+#define NUL_SYG			(PERIOD_SYG - NUL_TIME/5)
+#define ONE_SYG			(PERIOD_SYG - ONE_TIME/5)
 
 #include <string.h>
 /* USER CODE END Includes */

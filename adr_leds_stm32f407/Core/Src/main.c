@@ -109,8 +109,8 @@ static void MX_IWDG_Init(void);
 static void MX_TIM1_Init( void );
 static void MX_TIM8_Init( void );
 static void TIM_SendEnd( void );
-static void ReverseLedLineArray(struct NEO_Pixel_s buff_out[], struct NEO_Pixel_s buff_in[], uint16_t buff_len);
-static void SetOutLedArray( LED_HandleTypeDef *buff_out, LED_HandleTypeDef *buff_in, uint16_t buff_len_in_line );
+//static void ReverseLedLineArray(struct NEO_Pixel_s buff_out[], struct NEO_Pixel_s buff_in[], uint16_t buff_len);
+//static void SetOutLedArray( LED_HandleTypeDef *buff_out, LED_HandleTypeDef *buff_in, uint16_t buff_len_in_line );
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -196,14 +196,13 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_LSI;
-  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLM = 8;
-  RCC_OscInitStruct.PLL.PLLN = 168;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+  RCC_OscInitStruct.PLL.PLLM = 4;
+  RCC_OscInitStruct.PLL.PLLN = 200;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = 4;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
@@ -465,7 +464,6 @@ void LED_SendData( uint16_t data_len )
 {
 	if (!((TIM1->CR1 & TIM_CR1_CEN)||(TIM4->CR1 & TIM_CR1_CEN)))
 	{
-//		SetOutLedArray(&local.buff_s, &add_leds_buff, PIXELS_NUM);
 		memcpy( local.buff_s.data_buf, add_leds_buff.data_buf, PIXELS_NUM*24);
 
 		local.data_buf[0] = (uint8_t *)local.buff_s.led_data.line1;
@@ -519,12 +517,12 @@ void TIM1_UPD_Servo_Set( void )
 	TIM1->CCR1 = local.pulse[(0x80 & local.data_buf[0][local.byte_count] << local.bit_count) >> 7];
 	TIM1->CCR2 = local.pulse[(0x80 & local.data_buf[1][local.byte_count] << local.bit_count) >> 7];
 	TIM1->CCR3 = local.pulse[(0x80 & local.data_buf[2][local.byte_count] << local.bit_count) >> 7];
-	TIM1->CCR4 = local.pulse[(0x80 & local.data_buf[3][local.byte_count] << local.bit_count) >> 7];
+	TIM8->CCR4 = local.pulse[(0x80 & local.data_buf[3][local.byte_count] << local.bit_count) >> 7];
 
 	TIM8->CCR1 = local.pulse[(0x80 & local.data_buf[4][local.byte_count] << local.bit_count) >> 7];
 	TIM8->CCR2 = local.pulse[(0x80 & local.data_buf[5][local.byte_count] << local.bit_count) >> 7];
 	TIM8->CCR3 = local.pulse[(0x80 & local.data_buf[6][local.byte_count] << local.bit_count) >> 7];
-	TIM8->CCR4 = local.pulse[(0x80 & local.data_buf[7][local.byte_count] << local.bit_count) >> 7];
+	TIM1->CCR4 = local.pulse[(0x80 & local.data_buf[7][local.byte_count] << local.bit_count) >> 7];
 
 	( local.byte_count == local.data_len )?( TIM_SendEnd() ):( TIM1->CR1 |= TIM_CR1_CEN );
 }
@@ -545,25 +543,25 @@ void Delay( uint16_t ms )
 		HAL_IWDG_Refresh(&hiwdg);
 	}
 }
-static void ReverseLedLineArray(struct NEO_Pixel_s buff_out[], struct NEO_Pixel_s buff_in[], uint16_t buff_len)
-{
-	uint16_t len_tmp = buff_len - 1;
-	for(uint16_t i = 0; i < buff_len; i++)
-	{
-		memcpy(&buff_out[i], &buff_in[len_tmp - i], sizeof(buff_out[i]));
-	}
-}
-static void SetOutLedArray( LED_HandleTypeDef *buff_out, LED_HandleTypeDef *buff_in, uint16_t buff_len_in_line )
-{
-	memcpy(  &buff_out->led_data.line1, &buff_in->led_data.line1, sizeof(buff_in->led_data.line1));
-	ReverseLedLineArray(buff_out->led_data.line2, buff_in->led_data.line2, buff_len_in_line);
-	memcpy(  &buff_out->led_data.line3, &buff_in->led_data.line3, sizeof(buff_in->led_data.line3));
-	ReverseLedLineArray(buff_out->led_data.line4, buff_in->led_data.line4, buff_len_in_line);
-	memcpy(  &buff_out->led_data.line5, &buff_in->led_data.line5, sizeof(buff_in->led_data.line5));
-	ReverseLedLineArray(buff_out->led_data.line6, buff_in->led_data.line6, buff_len_in_line);
-	memcpy(  &buff_out->led_data.line7, &buff_in->led_data.line7, sizeof(buff_in->led_data.line7));
-	ReverseLedLineArray(buff_out->led_data.line8, buff_in->led_data.line8, buff_len_in_line);
-}
+//static void ReverseLedLineArray(struct NEO_Pixel_s buff_out[], struct NEO_Pixel_s buff_in[], uint16_t buff_len)
+//{
+//	uint16_t len_tmp = buff_len - 1;
+//	for(uint16_t i = 0; i < buff_len; i++)
+//	{
+//		memcpy(&buff_out[i], &buff_in[len_tmp - i], sizeof(buff_out[i]));
+//	}
+//}
+//static void SetOutLedArray( LED_HandleTypeDef *buff_out, LED_HandleTypeDef *buff_in, uint16_t buff_len_in_line )
+//{
+//	memcpy(  &buff_out->led_data.line1, &buff_in->led_data.line1, sizeof(buff_in->led_data.line1));
+//	ReverseLedLineArray(buff_out->led_data.line2, buff_in->led_data.line2, buff_len_in_line);
+//	memcpy(  &buff_out->led_data.line3, &buff_in->led_data.line3, sizeof(buff_in->led_data.line3));
+//	ReverseLedLineArray(buff_out->led_data.line4, buff_in->led_data.line4, buff_len_in_line);
+//	memcpy(  &buff_out->led_data.line5, &buff_in->led_data.line5, sizeof(buff_in->led_data.line5));
+//	ReverseLedLineArray(buff_out->led_data.line6, buff_in->led_data.line6, buff_len_in_line);
+//	memcpy(  &buff_out->led_data.line7, &buff_in->led_data.line7, sizeof(buff_in->led_data.line7));
+//	ReverseLedLineArray(buff_out->led_data.line8, buff_in->led_data.line8, buff_len_in_line);
+//}
 /* USER CODE END 4 */
 
 /**
